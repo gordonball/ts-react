@@ -12,24 +12,32 @@ import { v4 as uuid } from 'uuid';
  * BoxList -> NewBoxForm
  */
 
-function NewBoxForm({ createBox }) {
-  const [formData, setFormData] = useState({
+interface BoxFormInterface {
+  id?: string;
+  width: string | number;
+  height: string | number;
+  backgroundColor: string;
+}
+
+function NewBoxForm({ createBox }: { createBox: Function; }) {
+  const [formData, setFormData] = useState<BoxFormInterface>({
     height: "",
     width: "",
     backgroundColor: "",
   });
 
+  console.log("NewBoxForm", formData)
   /** Update form input. */
-  function handleChange(evt) {
-    const { name, value } = evt.target;
-    setFormData(formData => ({
+  function handleChange(evt: React.ChangeEvent<HTMLInputElement>): void {
+    const { name, value }: { name: string; value: string; } = evt.target;
+    setFormData((formData: BoxFormInterface) : BoxFormInterface => ({
       ...formData,
       [name]: value,
     }));
   }
 
   /** Submit form: call function from parent & clear inputs. */
-  function handleSubmit(evt) {
+  function handleSubmit(evt: React.FormEvent<HTMLFormElement>): void {
     evt.preventDefault();
     createBox({ ...formData, id: uuid() });
     setFormData({ height: "", width: "", backgroundColor: "" });

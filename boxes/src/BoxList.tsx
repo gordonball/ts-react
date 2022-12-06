@@ -8,23 +8,30 @@ import NewBoxForm from "./NewBoxForm";
  * - boxes: [ { id, width, height, backgroundColor }, ... ]
  */
 
+interface BoxInterface {
+  id: string;
+  width: string | number;
+  height: string | number;
+  backgroundColor: string;
+}
+
 function BoxList() {
-  const [boxes, setBoxes] = useState([])
+  const [boxes, setBoxes] = useState<Array<BoxInterface>>([])
 
   /** add box with given { id, width, height, backgroundColor } */
-  function add(newBox) {
-    setBoxes(boxes => [...boxes, newBox]);
+  function add(newBox: BoxInterface): void {
+    setBoxes((boxes: Array<BoxInterface>): Array<BoxInterface> => [...boxes, newBox]);
   }
 
   /** remove box matching that id. */
-  function remove(id: string) {
-    setBoxes(boxes => boxes.filter(box => box.id !== id));
+  function remove(id: string): void {
+    setBoxes((boxes: Array<BoxInterface>): Array<BoxInterface> => boxes.filter(box => box.id !== id));
   }
 
   return (
     <div>
       <NewBoxForm createBox={add} />
-      {boxes.map(({ id, width, height, backgroundColor }) => (
+      {boxes.map(({ id, width, height, backgroundColor }: BoxInterface) => (
         <Box
           key={id}
           id={id}
